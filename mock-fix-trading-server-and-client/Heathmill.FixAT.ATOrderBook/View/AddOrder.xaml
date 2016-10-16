@@ -1,0 +1,57 @@
+﻿<Window x:Class="Heathmill.FixAT.ATOrderBook.View.AddOrder"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpfUtilities="clr-namespace:Heathmill.WpfUtilities;assembly=Heathmill.WpfUtilities"
+        mc:Ignorable="d"
+        Title="Add Order" Height="200" Width="320"
+        Icon="../Resources/plus.ico">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0">ClOrdID:</Label>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=ClOrdID}"></TextBox>
+        
+        <Label Grid.Row="1" Grid.Column="0">Symbol:</Label>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Symbol}"></TextBox>
+        
+        <Label Grid.Row="2" Grid.Column="0">Price:</Label>
+        <wpfUtilities:NumericTextBox Grid.Row="2" Grid.Column="1" IsNegativeAllowed="False" BindingPath="Price"></wpfUtilities:NumericTextBox>
+        
+        <Label Grid.Row="3" Grid.Column="0">Quantity:</Label>
+        <wpfUtilities:NumericTextBox Grid.Row="3" Grid.Column="1" IsNegativeAllowed="False" BindingPath="Quantity"></wpfUtilities:NumericTextBox>
+
+        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type RadioButton}">
+                    <Setter Property="Margin" Value="2,5,2,5"/>
+                </Style>
+            </StackPanel.Resources>
+            <RadioButton GroupName="Side" Content="Buy" IsChecked="{Binding Path=IsBuyChecked, Mode=TwoWay}"/>
+            <RadioButton GroupName="Side" Content="Sell" IsChecked="{Binding Path=IsSellChecked, Mode=TwoWay}"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="0,0,3,0"/>
+                </Style>
+            </StackPanel.Resources>
+            <Button Content="OK" IsDefault="True" Click="OKButton_OnClick" IsEnabled="{Binding Path=IsValidOrder}"  Width="60"/>
+            <Button Content="Cancel" IsCancel="True" Width="60"/>
+        </StackPanel>
+    </Grid>
+</Window>

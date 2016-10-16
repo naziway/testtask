@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="Heathmill.FixAT.ATOrderBook.View.OrderBook"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:Heathmill.FixAT.Client.Converters;assembly=Heathmill.FixAT.Client"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="OrderBookWindow">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Content="Market View" FontWeight="DemiBold"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListView Grid.Column="0"
+                      x:Name="LvOrders"
+                      IsSynchronizedWithCurrentItem="True"
+                      ItemsSource="{Binding Path=OrderStack, Mode=OneWay}"
+                      AllowDrop="False"
+                      SelectionMode="Single"
+                      Tag="{Binding ElementName=OrderBookWindow}">
+                <ListView.Resources>
+                    <converters:ColorToSolidBrush x:Key="RowColourToSolidBrush"/>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="Background" Value="{Binding Path=RowColor, Converter={StaticResource RowColourToSolidBrush}}" />
+                    </Style>
+                </ListView.Resources>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add Order ..." Click="AddOrder_OnClick"></MenuItem>
+                        <MenuItem Header="Buy" 
+                                  Command="{Binding Parent.PlacementTarget.Tag.BuyOrderCommand, RelativeSource={RelativeSource Self}}" 
+                                  CommandParameter="{Binding}"/>
+                        <MenuItem Header="Sell" 
+                                  Command="{Binding Parent.PlacementTarget.Tag.SellOrderCommand, RelativeSource={RelativeSource Self}}" 
+                                  CommandParameter="{Binding}"/>
+                        <!-- TODO Add cancel to the context menu, enabled if order selected, would need to better differentiate market sides -->
+                    </ContextMenu>
+                </ListView.ContextMenu>
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False">
+                        <GridView.Columns>
+                            <GridViewColumn Header="Symbol" DisplayMemberBinding="{Binding Path=Symbol}"/>
+                            <GridViewColumn Header="ClOrdID" DisplayMemberBinding="{Binding Path=BidClOrdID}"/>
+                            <GridViewColumn Header="Qty" DisplayMemberBinding="{Binding Path=BidQty}"/>
+                            <GridViewColumn Header="Buy" DisplayMemberBinding="{Binding Path=BidPrice}"/>
+                            <GridViewColumn Header="Sell" DisplayMemberBinding="{Binding Path=AskPrice}"/>
+                            <GridViewColumn Header="Qty" DisplayMemberBinding="{Binding Path=AskQty}"/>
+                            <GridViewColumn Header="ClOrdID" DisplayMemberBinding="{Binding Path=AskClOrdID}"/>
+                            <!--GridViewColumn Header="Symbol" DisplayMemberBinding="{Binding Path=Symbol}"/-->
+                            <!--GridViewColumn Header="Status" DisplayMemberBinding="{Binding Path=Status}"/-->
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+
+        <Button Grid.Row="2" Click="AddOrder_OnClick">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Margin" Value="0,0,3,0"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Image Source="../Resources/plus.ico" Height="16" Width="16"/>
+                <TextBlock>Add Order ...</TextBlock>
+            </StackPanel>
+        </Button>
+    </Grid>
+</UserControl>

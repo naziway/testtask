@@ -1,0 +1,125 @@
+﻿<UserControl x:Class="Heathmill.FixAT.ATOrderBook.View.ATOrderBook"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="480" d:DesignWidth="640">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="AT Orders" FontWeight="DemiBold" />
+        
+        <TabControl Grid.Row="1" HorizontalAlignment="Stretch">
+            <TabItem Header="Iceberg">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <ListView Grid.Row="0"
+                              ItemsSource="{Binding Path=IcebergOrders, Mode=OneWay}"
+                              IsSynchronizedWithCurrentItem="True"
+                              Name="IcebergList">
+                        <ListView.Background>
+                            <SolidColorBrush Color="Transparent" x:Name="IcebergBackBrush"></SolidColorBrush>
+                        </ListView.Background>
+                        <!--<ListView.Resources>
+                            <Style TargetType="{x:Type ListViewItem}" x:Name="IcebergListItem">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=FlashOrder}" Value="True">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Storyboard.TargetProperty="(Background).(Color)"
+                                                                    From="DeepSkyBlue"
+                                                                    To="Transparent"
+                                                                    Duration="0:0:2">                                                        
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListView.Resources>-->
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="True">
+                                <GridView.Columns>
+                                    <GridViewColumn Header="Symbol" DisplayMemberBinding="{Binding Path=Symbol}"/>
+                                    <GridViewColumn Header="ClOrdID" DisplayMemberBinding="{Binding Path=ClOrdID}"/>
+                                    <GridViewColumn Header="Side" DisplayMemberBinding="{Binding Path=Side}"/>
+                                    <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Path=CurrentPrice}"/>
+                                    <GridViewColumn Header="Delta" DisplayMemberBinding="{Binding Path=PriceDelta}"/>
+                                    <GridViewColumn Header="Initial" DisplayMemberBinding="{Binding Path=InitialPrice}"/>
+                                    <GridViewColumn Header="Market Qty" DisplayMemberBinding="{Binding Path=CurrentQuantity}"/>
+                                    <GridViewColumn Header="Remaining Qty" DisplayMemberBinding="{Binding Path=RemainingQuantity}"/>
+                                    <GridViewColumn Header="Total Qty" DisplayMemberBinding="{Binding Path=TotalQuantity}"/>
+                                    <GridViewColumn Header="Clip" DisplayMemberBinding="{Binding Path=ClipSize}"/>
+                                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Path=Status}"/>
+                                    <GridViewColumn Header="Last Traded" DisplayMemberBinding="{Binding Path=LastTradedTime, StringFormat=HH:mm:ss}"/>
+                                    <GridViewColumn Header=" ">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="Activate" Command="{Binding Path=ActivateIcebergCommand}" CommandParameter="{Binding}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header=" ">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="Suspend" Command="{Binding Path=SuspendIcebergCommand}" CommandParameter="{Binding}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+                        <!--ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ContextMenu>
+                                    <MenuItem Header="Update ..."
+                                              Command="{Binding Path=UpdateIcebergCommand}"
+                                              CommandParameter="{Binding}">
+                                    </MenuItem>
+                                </ContextMenu>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding Path=FlashOrder}" Value="True">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Storyboard.TargetProperty="Color"
+                                                                    Storyboard.TargetName="IcebergBackBrush"
+                                                                    From="DeepSkyBlue"
+                                                                    To="Transparent"
+                                                                    Duration="0:0:2">
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ListView.ItemTemplate-->
+                    </ListView>
+
+                    <Button Grid.Row="1" Click="AddIcebergOrder_OnClick">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Image}">
+                                    <Setter Property="Margin" Value="0,0,3,0"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Image Source="../Resources/iceberg_75.jpg" Height="16" Width="16"/>
+                            <TextBlock>Add Iceberg Order ...</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>
